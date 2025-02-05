@@ -17,3 +17,8 @@ configure provider
 4- Install monitoring tools 
 5- Deploy Kubernetes manifests
 
+helmtf
+kubernetes.tf
+network.tf
+
+provider.tf fix l provider helm bil config el 3meltha

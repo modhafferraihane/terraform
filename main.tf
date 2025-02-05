@@ -1,3 +1,4 @@
+# create vpc
 resource "aws_vpc" "example" {
   cidr_block = "10.0.0.0/16"
 
@@ -169,6 +170,9 @@ resource "aws_eks_cluster" "example" {
   name     = "example-cluster"
   role_arn = aws_iam_role.eks_cluster_role.arn
 
+  access_config {
+    authentication_mode = "API_AND_CONFIG_MAP"
+  }
   vpc_config {
     subnet_ids = [
       aws_subnet.public_subnet_1.id,
@@ -189,7 +193,7 @@ resource "aws_eks_node_group" "example" {
   cluster_name    = aws_eks_cluster.example.name
   node_group_name = "example-node-group"
   node_role_arn   = aws_iam_role.eks_node_role.arn
-  subnet_ids      = [
+  subnet_ids = [
     aws_subnet.private_subnet_1.id,
     aws_subnet.private_subnet_2.id,
   ]
@@ -267,3 +271,25 @@ resource "aws_iam_role_policy_attachment" "eks_ecr_policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
   role       = aws_iam_role.eks_node_role.name
 }
+
+
+/*
+resource "helm_release" "ingress_nginx" {
+  name       = "ingress-nginx"
+  repository = "https://kubernetes.github.io/ingress-nginx"
+  chart      = "ingress-nginx"
+  version    = "4.0.6"  # Vous pouvez spécifier la version souhaitée
+
+  set {
+    name  = "controller.replicaCount"
+    value = "2"
+  }
+
+  set {
+    name  = "controller.service.type"
+    value = "LoadBalancer"
+  }
+  depends_on = [ aws_eks_node_group.example ]
+}*/
+
+
