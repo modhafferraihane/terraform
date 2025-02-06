@@ -2,7 +2,7 @@ variable "eks_clusters" {
   description = "List of EKS clusters to create records"
   type = set(string)
   default = [
-    "example-cluster"
+    "ops-cluster"
   ]
 }
 
