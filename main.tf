@@ -8,10 +8,7 @@ resource "aws_eks_cluster" "example" {
   }
   vpc_config {
     subnet_ids = [
-      aws_subnet.public_subnet_1.id,
-      aws_subnet.public_subnet_2.id,
-      aws_subnet.private_subnet_1.id,
-      aws_subnet.private_subnet_2.id,
+      for subnet in aws_subnet.subnet : subnet.id
     ]
   }
 
@@ -27,8 +24,7 @@ resource "aws_eks_node_group" "example" {
   node_group_name = "example-node-group"
   node_role_arn   = aws_iam_role.eks_node_role.arn
   subnet_ids = [
-    aws_subnet.private_subnet_1.id,
-    aws_subnet.private_subnet_2.id,
+    for subnet in aws_subnet.subnet : subnet.id
   ]
 
   scaling_config {
