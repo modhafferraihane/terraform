@@ -1,45 +1,3 @@
-# EKS Cluster
-resource "aws_eks_cluster" "example" {
-  name     = "ops-cluster"
-  role_arn = aws_iam_role.eks_cluster_role.arn
-
-  access_config {
-    authentication_mode = "API_AND_CONFIG_MAP"
-  }
-  vpc_config {
-    subnet_ids = [
-      for subnet in aws_subnet.subnet : subnet.id
-    ]
-  }
-
-  depends_on = [
-    aws_iam_role_policy_attachment.eks_cluster_policy,
-    aws_iam_role_policy_attachment.eks_service_policy,
-  ]
-}
-
-# EKS Node Group
-resource "aws_eks_node_group" "example" {
-  cluster_name    = aws_eks_cluster.example.name
-  node_group_name = "example-node-group"
-  node_role_arn   = aws_iam_role.eks_node_role.arn
-  subnet_ids = [
-    for subnet in aws_subnet.subnet : subnet.id
-  ]
-
-  scaling_config {
-    desired_size = 1
-    max_size     = 3
-    min_size     = 1
-  }
-
-  depends_on = [
-    aws_iam_role_policy_attachment.eks_worker_node_policy,
-    aws_iam_role_policy_attachment.eks_cni_policy,
-    aws_iam_role_policy_attachment.eks_ecr_policy,
-  ]
-}
-
 # IAM Role for EKS Cluster
 resource "aws_iam_role" "eks_cluster_role" {
   name = "eks-cluster-role"
@@ -67,6 +25,7 @@ resource "aws_iam_role_policy_attachment" "eks_service_policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSServicePolicy"
   role       = aws_iam_role.eks_cluster_role.name
 }
+
 
 # IAM Role for EKS Node Group
 resource "aws_iam_role" "eks_node_role" {
@@ -100,6 +59,20 @@ resource "aws_iam_role_policy_attachment" "eks_ecr_policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
   role       = aws_iam_role.eks_node_role.name
 }
+
+# EKS module
+module "eks" {
+  source           = "./modules/eks"
+  eks_cluster_names = var.eks_cluster_names
+  node_group_name = "ops-node-group"
+  cluster_role_arn = aws_iam_role.eks_cluster_role.arn
+  node_role_arn    = aws_iam_role.eks_node_role.arn
+  subnet_ids       = [for subnet in aws_subnet.subnet : subnet.id]
+  desired_size     = 1
+  max_size         = 3
+  min_size         = 1
+}
+
 
 
 

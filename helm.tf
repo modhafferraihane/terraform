@@ -14,6 +14,6 @@ resource "helm_release" "ingress_nginx" {
     name  = "controller.service.type"
     value = "LoadBalancer"
   }
-  depends_on = [aws_eks_access_entry.devops, aws_eks_access_policy_association.devops ]
+  depends_on = [module.eks ]
   timeout = 300
 } 
