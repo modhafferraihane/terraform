@@ -34,6 +34,7 @@ resource "aws_subnet" "subnet" {
 # Elastic IP
 resource "aws_eip" "nat_eip" {
   domain = "vpc"
+  depends_on = [ aws_subnet.subnet]
 }
 
 # NAT Gateway
