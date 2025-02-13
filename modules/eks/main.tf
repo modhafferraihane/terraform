@@ -1,5 +1,4 @@
 
-
 resource "aws_eks_cluster" "example" {
   name     = var.eks_cluster_names[0]
   role_arn = var.cluster_role_arn
@@ -10,7 +9,11 @@ resource "aws_eks_cluster" "example" {
   vpc_config {
     subnet_ids = var.subnet_ids
   }
-
+  /*
+depends_on = [
+    aws_iam_role_policy_attachment.eks_cluster_policy,
+    aws_iam_role_policy_attachment.eks_service_policy,
+  ]*/
 }
 
 
@@ -26,4 +29,11 @@ resource "aws_eks_node_group" "example" {
     max_size     = var.max_size
     min_size     = var.min_size
   }
+  /*
+  depends_on = [
+    aws_eks_cluster.example,
+    aws_iam_role_policy_attachment.eks_worker_node_policy,
+    aws_iam_role_policy_attachment.eks_cni_policy,
+    aws_iam_role_policy_attachment.eks_ecr_policy,
+  ]*/
 }
