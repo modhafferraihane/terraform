@@ -17,31 +17,46 @@ resource "aws_internet_gateway" "igw" {
 }
 
 # Subnets
-resource "aws_subnet" "subnet" {
-  for_each = { for subnet in var.subnets : subnet.name => subnet }
+resource "aws_subnet" "public_subnet" {
+  for_each = { for subnet in var.public_subnets : subnet.name => subnet }
 
-  vpc_id            = aws_vpc.example.id
-  cidr_block        = each.value.cidr_block
-  availability_zone = each.value.availability_zone
-  map_public_ip_on_launch = each.value.type == "public" ? true : false
-  
+  vpc_id                  = aws_vpc.example.id
+  cidr_block              = each.value.cidr_block
+  availability_zone       = each.value.availability_zone
+  map_public_ip_on_launch = true
+
   tags = {
     Name = each.value.name
-    Type = each.value.type
+    "kubernetes.io/role/elb" = "1"
+    "kubernetes.io/cluster/ops-cluster" = "owned"
   }
-  depends_on = [ aws_internet_gateway.igw ]
+}
+
+resource "aws_subnet" "private_subnet" {
+  for_each = { for subnet in var.private_subnets : subnet.name => subnet }
+
+  vpc_id                  = aws_vpc.example.id
+  cidr_block              = each.value.cidr_block
+  availability_zone       = each.value.availability_zone
+  map_public_ip_on_launch = false
+
+  tags = {
+    Name = each.value.name
+    "kubernetes.io/role/internal-elb" = "1"
+    "kubernetes.io/cluster/ops-cluster" = "owned"
+  }
 }
 
 # Elastic IP
 resource "aws_eip" "nat_eip" {
   domain = "vpc"
-  depends_on = [ aws_subnet.subnet]
+  depends_on = [aws_subnet.private_subnet, aws_subnet.public_subnet]
 }
 
 # NAT Gateway
 resource "aws_nat_gateway" "nat_gw" {
   allocation_id = aws_eip.nat_eip.id
-  subnet_id     = aws_subnet.subnet["public-subnet-1"].id
+  subnet_id     = aws_subnet.public_subnet["public-subnet-1"].id
 }
 
 # Route Tables
@@ -73,12 +88,12 @@ resource "aws_route_table" "private_rt" {
 
 # Route Table Associations
 resource "aws_route_table_association" "public_rt_assoc_1" {
-  subnet_id      = aws_subnet.subnet["public-subnet-1"].id
+  subnet_id      = aws_subnet.public_subnet["public-subnet-1"].id
   route_table_id = aws_route_table.public_rt.id
 }
 
 resource "aws_route_table_association" "public_rt_assoc_2" {
-  subnet_id      = aws_subnet.subnet["public-subnet-2"].id
+  subnet_id      = aws_subnet.public_subnet["public-subnet-2"].id
   route_table_id = aws_route_table.public_rt.id
 }
 

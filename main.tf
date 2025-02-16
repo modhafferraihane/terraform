@@ -8,8 +8,9 @@ module "iam" {
 
 # VPC module
 module "networking" {
-  source = "./modules/networking"
-  subnets = var.subnets
+source = "./modules/networking"
+  public_subnets = var.public_subnets
+  private_subnets = var.private_subnets
   cidr_block = var.cidr_vpc
 }
 
@@ -18,7 +19,7 @@ module "eks" {
   source           = "./modules/eks"
   eks_cluster_name = var.eks_cluster_name
   node_group_name = "ops-node-group"
-  subnet_ids       = module.networking.subnet_ids
+  subnet_ids = module.networking.private_subnet_ids
   desired_size     = 1
   max_size         = 3
   min_size         = 1
