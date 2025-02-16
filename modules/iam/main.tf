@@ -11,6 +11,13 @@ resource "aws_iam_role" "eks_cluster_role" {
         Principal = {
           Service = "eks.amazonaws.com"
         }
+      },
+      {
+        Effect = "Allow",
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        },
+        Action = "sts:AssumeRole"
       }
     ]
   })

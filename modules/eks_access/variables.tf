@@ -1,54 +1,10 @@
-variable "region" {
-  description = "AWS region"
-  type        = string
-  default     = "us-east-1"
-}
-
-variable "eks_cluster_name" {
-  description = "EKS cluster name"
-  type        = string
-}
-
-variable "cluster_role_arn" {
-  description = "Name of the IAM role for the EKS cluster"
-  type        = string
-  default     = "eks-cluster-role"
-}
-
-variable "node_role_arn" {
-  description = "Name of the IAM role for the EKS node group"
-  type        = string
-  default     = "eks-node-role"
-}
-
-variable "node_group_name" {
-  description = "EKS node group name"
-  type        = string
-}
-
-
-
-variable "subnet_ids" {
-  description = "List of subnet IDs"
-  type        = list(string)
-}
-
-variable "desired_size" {
-  description = "Desired number of worker nodes"
-  type        = number
-  default     = 1
-}
-
-variable "max_size" {
-  description = "Maximum number of worker nodes"
-  type        = number
-  default     = 3
-}
-
-variable "min_size" {
-  description = "Minimum number of worker nodes"
-  type        = number
-  default     = 1
+variable "eks_access_entries_admins" {
+  description = "List of EKS clusters to create records"
+  type = list(object({
+    cluster_name  = string
+    principal_arn = string
+  })
+  ) 
 }
 
 

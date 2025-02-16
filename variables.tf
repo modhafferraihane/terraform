@@ -1,7 +1,7 @@
-variable "eks_cluster_names" {
+variable "eks_cluster_name" {
   description = "EKS cluster name"
-  type        = list(string)
-  default     = ["ops-cluster"]
+  type        = string
+  default     = "ops-cluster"
 }
 
 variable "subnets" {
@@ -38,4 +38,9 @@ variable "subnets" {
       type              = "private"
     }
   ]
+}
+
+variable "cidr_vpc" {
+  type = string
+  default = "10.0.0.0/16"
 }

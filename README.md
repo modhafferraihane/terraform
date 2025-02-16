@@ -2,14 +2,14 @@
 configure backend
 configure provider
 2- Provision a highly available AWS infrastructure dedicated to a Kubernetes cluster 
- internet gateway 
- 2 private subnet
- 2 public subnet 
- elasticip
- 1 natgateway
- 1 private route table
- private security group
- public security group
+internet gateway 
+2 private subnet
+2 public subnet 
+elasticip
+1 natgateway
+1 private route table
+private security group
+public security group
  
  
 3- Provision a kubernetes cluster and the workers nodes
@@ -21,7 +21,12 @@ helmtf
 kubernetes.tf
 network.tf
 
-provider.tf fix l provider helm bil config el 3meltha
 
-module network
-module aim
+public subnets 
+Key=kubernetes.io/role/elb,Value=1
+Key=kubernetes.io/cluster/ops-cluster,Value=owned
+
+
+private subnets
+Key=kubernetes.io/role/internal-elb,Value=1
+Key=kubernetes.io/cluster/ops-cluster,Value=owned

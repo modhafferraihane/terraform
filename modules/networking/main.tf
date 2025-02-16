@@ -1,6 +1,6 @@
 # create vpc
 resource "aws_vpc" "example" {
-  cidr_block = "10.0.0.0/16"
+  cidr_block = var.cidr_block
 
   tags = {
     Name = "example-vpc"
@@ -29,6 +29,7 @@ resource "aws_subnet" "subnet" {
     Name = each.value.name
     Type = each.value.type
   }
+  depends_on = [ aws_internet_gateway.igw ]
 }
 
 # Elastic IP
@@ -111,7 +112,14 @@ resource "aws_security_group" "private_sg" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/16"]
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
