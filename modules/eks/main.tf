@@ -3,7 +3,7 @@
 resource "aws_eks_cluster" "example" {
   name     = var.eks_cluster_name
   role_arn = var.cluster_role_arn
-  
+  version  = "1.32"
 
   access_config {
     authentication_mode = "API_AND_CONFIG_MAP"

@@ -52,6 +52,15 @@ variable "min_size" {
 }
 
 
+variable "eks_access_entries_admins" {
+  description = "List of EKS clusters to create records"
+  type = list(object({
+    cluster_name  = string
+    principal_arn = string
+  })
+  ) 
+}
+
 variable "eks_access_scope" {
   description = "EKS Namespaces for teams to grant access with aws_eks_access_policy_association"
   type = map(object({

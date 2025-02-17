@@ -50,7 +50,7 @@ resource "aws_subnet" "private_subnet" {
 # Elastic IP
 resource "aws_eip" "nat_eip" {
   domain = "vpc"
-  depends_on = [aws_subnet.private_subnet, aws_subnet.public_subnet]
+  depends_on = [aws_internet_gateway.igw]
 }
 
 # NAT Gateway
@@ -87,15 +87,18 @@ resource "aws_route_table" "private_rt" {
 }
 
 # Route Table Associations
-resource "aws_route_table_association" "public_rt_assoc_1" {
-  subnet_id      = aws_subnet.public_subnet["public-subnet-1"].id
+resource "aws_route_table_association" "public_rt_association" {
+  for_each = aws_subnet.public_subnet
+  subnet_id      = each.value.id
   route_table_id = aws_route_table.public_rt.id
 }
 
-resource "aws_route_table_association" "public_rt_assoc_2" {
-  subnet_id      = aws_subnet.public_subnet["public-subnet-2"].id
-  route_table_id = aws_route_table.public_rt.id
+resource "aws_route_table_association" "private_rt_association" {
+  for_each = aws_subnet.private_subnet
+  subnet_id      = each.value.id
+  route_table_id = aws_route_table.private_rt.id
 }
+
 
 # Security Groups
 resource "aws_security_group" "public_sg" {
@@ -105,6 +108,13 @@ resource "aws_security_group" "public_sg" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -131,9 +141,9 @@ resource "aws_security_group" "private_sg" {
   }
 
   ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
