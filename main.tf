@@ -1,4 +1,16 @@
-# VPC module
+
+
+
+
+
+
+
+
+
+
+
+
+# # VPC module
 module "networking" {
 source = "./modules/networking"
   public_subnets = var.public_subnets
@@ -45,10 +57,3 @@ module "eks" {
   depends_on = [ module.iam ]
 }
 
-
-
-# module "eks_access" {
-#   source           = "./modules/eks_access"
-#   eks_access_entries_admins = local.eks_access_entries_devops
-#   depends_on = [ module.eks.cluster ]
-# }

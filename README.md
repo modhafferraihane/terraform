@@ -15,6 +15,11 @@ public security group
 3- Provision a kubernetes cluster and the workers nodes
 1 master et 1 worker
 4- Install monitoring tools 
+install ingress nginx 
+install cert manager helm
+install kube-prometheus-stack
+
+
 5- Deploy Kubernetes manifests
 
 helmtf
@@ -22,11 +27,4 @@ kubernetes.tf
 network.tf
 
 
-public subnets 
-Key=kubernetes.io/role/elb,Value=1
-Key=kubernetes.io/cluster/ops-cluster,Value=owned
 
-
-private subnets
-Key=kubernetes.io/role/internal-elb,Value=1
-Key=kubernetes.io/cluster/ops-cluster,Value=owned

@@ -17,7 +17,7 @@ resource "aws_eks_cluster" "example" {
 resource "aws_eks_node_group" "example" {
   cluster_name    = aws_eks_cluster.example.name
   node_group_name = var.node_group_name
-  node_role_arn   = var.cluster_role_arn
+  node_role_arn   = var.node_role_arn
   subnet_ids      = var.subnet_ids
 
   scaling_config {
@@ -27,3 +27,4 @@ resource "aws_eks_node_group" "example" {
   }
   depends_on = [aws_eks_cluster.example]
 }
+
