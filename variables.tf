@@ -50,3 +50,14 @@ variable "cidr_vpc" {
   type = string
   default = "10.0.0.0/16"
 }
+
+variable "region" {
+  description = "The AWS region"
+  type        = string
+  default     = "us-east-1"
+}
+
+# variable "account_id" {
+#   description = "The AWS account ID"
+#   type        = string
+# }
