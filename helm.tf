@@ -45,6 +45,7 @@ resource "helm_release" "kube_prometheus_stack" {
   version    = "69.3.2"  
   namespace  = "monitoring"
   create_namespace = true
+  values = [ "${file("${path.root}/kubernetes/helm/kube-prometheus-stack/values.yaml")}" ]
   depends_on       = [module.eks]
 }
 resource "kubernetes_namespace" "external_dns" {
@@ -61,37 +62,13 @@ resource "helm_release" "external_dns" {
   namespace  = kubernetes_namespace.external_dns.metadata[0].name
 
   set {
-    name  = "provider"
-    value = "aws"
-  }
-
-  set {
-    name  = "aws.region"
-    value = "us-east-1"
-  }
-
-  set {
-    name  = "aws.zoneType"
-    value = "public"
-  }
-
-  set {
     name  = "rbac.serviceAccountAnnotations.eks.amazonaws.com/role-arn"
-    value = aws_iam_role.external_dns_role.arn
+    value = module.iam.cluster_role_arn
   }
 
-  set {
-    name  = "serviceAccount.create"
-    value = "true"
-  }
-
-  set {
-    name  = "serviceAccount.name"
-    value = "external-dns"
-  }
   set {
     name  = "domainFilters[0]"
     value = "eksops.site"
   }
-  depends_on = [module.eks, kubernetes_namespace.external_dns, aws_iam_role_policy_attachment.external_dns_policy_attachment]
+  depends_on = [module.eks, kubernetes_namespace.external_dns]
 }

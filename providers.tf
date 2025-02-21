@@ -35,10 +35,6 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(data.aws_eks_cluster.example.certificate_authority.0.data)
   token                  = data.aws_eks_cluster_auth.example.token
 }
-/*
-resource "kubernetes_manifest" "grafana_service" {
-  manifest = yamldecode(file("${path.module}/kube-prometheus-stack-grafana.yml"))
-}*/
 
 provider "helm" {
   kubernetes {
