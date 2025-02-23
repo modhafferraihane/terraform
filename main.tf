@@ -43,7 +43,7 @@ module "eks" {
   eks_cluster_name = var.eks_cluster_name
   node_group_name = "ops-node-group"
   subnet_ids = module.networking.private_subnet_ids
-  desired_size     = 1
+  desired_size     = 2
   max_size         = 3
   min_size         = 1
   node_role_arn = module.iam.node_role_arn

@@ -7,17 +7,17 @@ metadata:
     kubernetes.io/tls-acme: "true"
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/rewrite-target: /
-    external-dns.alpha.kubernetes.io/hostname: eksops.site
+    # external-dns.alpha.kubernetes.io/hostname: eksops.site
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
 spec:
   ingressClassName: nginx
   tls:
   - hosts:
-    - grafana.eksops.site 
-    secretName: tls
+    - "*.eksops.site" 
+    secretName: wildcard-tls
   rules:
-  - host: grafana.eksops.site
+  - host: test.eksops.site
     http:
       paths:
       - path: /

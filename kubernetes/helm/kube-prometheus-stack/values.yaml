@@ -18,9 +18,9 @@ grafana:
     path: /
 
     tls: 
-    - secretName: grafana-tls
+    - secretName: wildcard-tls
       hosts:
-      - grafana.eksops.site
+      - "*.eksops.site"
 
     # datasources:
     #   name: Prometheus
@@ -47,8 +47,8 @@ prometheus:
     - /
 
     tls: 
-      - secretName: prometheus-tls
+      - secretName: wildcard-tls
         hosts:
-          - prometheus.example.com
+          - "*.example.com"
 
  
