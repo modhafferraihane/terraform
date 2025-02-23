@@ -2,6 +2,7 @@ resource "kubernetes_namespace" "ingress_nginx" {
   metadata {
     name = "ingress-nginx"
   }
+  depends_on = [ module.eks ]
 }
 resource "helm_release" "ingress_nginx" {
   name       = "ingress-nginx"
@@ -39,6 +40,7 @@ resource "kubernetes_namespace" "external_dns" {
   metadata {
     name = "external-dns"
   }
+  depends_on = [ module.eks ]
 }
 
 resource "helm_release" "external_dns" {
@@ -55,3 +57,20 @@ resource "helm_release" "external_dns" {
   ]
   depends_on = [module.eks, kubernetes_namespace.external_dns]
 }
+
+resource "kubernetes_namespace" "argocd" {
+  metadata {
+    name = "argocd"
+  }
+  depends_on = [ module.eks ] 
+}
+
+# resource "helm_release" "argocd" {
+#   name       = "argocd"
+#   repository = "https://argoproj.github.io/argo-helm"
+#   chart      = "argo-cd"
+#   version    = "5.4.0"  # Specify the desired version
+#   namespace  = kubernetes_namespace.argocd.metadata[0].name
+#   values     = [ "${file("${path.root}/kubernetes/helm/argocd/values.yaml")}" ]
+#   depends_on = [module.eks, kubernetes_namespace.argocd]
+# }
