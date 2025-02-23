@@ -35,20 +35,21 @@ data "aws_eks_cluster_auth" "example" {
 
 
 provider "kubernetes" {
-  host                   = module.eks.host
-  cluster_ca_certificate = base64decode(module.eks.certificate_authority)
+  host                   = data.aws_eks_cluster.example.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.example)
   token                  = data.aws_eks_cluster_auth.example.token
 }
 
 provider "helm" {
   kubernetes = {
-    host                   = module.eks.host
-    cluster_ca_certificate = base64decode(module.eks.certificate_authority)
-    token                  = data.aws_eks_cluster_auth.example.token  }
+  host                   = data.aws_eks_cluster.example.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.example)
+  token                  = data.aws_eks_cluster_auth.example.token
+}
 }
 
 provider "kubectl" {
-  host                   = module.eks.host
-  cluster_ca_certificate = base64decode(module.eks.certificate_authority)
-  token                  = data.aws_eks_cluster_auth.example.token 
+  host                   = data.aws_eks_cluster.example.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.example)
+  token                  = data.aws_eks_cluster_auth.example.token
 }
