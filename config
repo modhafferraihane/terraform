@@ -1,0 +1,26 @@
+users:
+  - name: arn:aws:eks:us-east-1:350137757872:cluster/ops-cluster
+    user:
+      exec:
+        apiVersion: client.authentication.k8s.io/v1beta1
+        args:
+          - '--region'
+          - us-east-1
+          - eks
+          - get-token
+          - '--cluster-name'
+          - ops-cluster
+          - '--output'
+          - json
+        command: aws
+clusters:
+  - cluster:
+      certificate-authority-data: >-
+        LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCVENDQWUyZ0F3SUJBZ0lJSTdId2o3cjNzNWN3RFFZSktvWklodmNOQVFFTEJRQXdGVEVUTUJFR0ExVUUKQXhNS2EzVmlaWEp1WlhSbGN6QWVGdzB5TlRBeU1qRXlNRFE0TVRKYUZ3MHpOVEF5TVRreU1EVXpNVEphTUJVeApFekFSQmdOVkJBTVRDbXQxWW1WeWJtVjBaWE13Z2dFaU1BMEdDU3FHU0liM0RRRUJBUVVBQTRJQkR3QXdnZ0VLCkFvSUJBUUNxVUYxdjlpKzkzN2NhOUJMaDZ3c2xMaHdmNzcrUzBXR3VsTDZZenEybVFDbkJ4ME1Pazl1WEdHYjcKbytvc05sdDY4ZWd3RFVjMmVvdnV3dzh2dnBoU3dhTkxVRDYyZUJxNjJWcStWWFBJbFk1VmJQZXcvcWl5L093awpPOTV1S0JoaDJ0YnBpTFN1Zk41L1Z6SnlSUm1WWVh2NGttd1E3UGtsUFYvQ2dyZ0xxekJPcjZPc2kwanJnRnZkClZFV0diUUFMMHd2dkwyM2poK2xOVk9uMTBoK1JTNkZYWEFKak1BZHFLL1N3bmFJKzVqWnBNWUdmSFpTMkZYVCsKTjB5cVZ0NlVBNy91eEhZR1kxK1pMd2QyTW9rak1WVGFsSUwvTklvd3ZNeWZnQ1RzWTVWRnN1a093RU0xN0hEKwpFL2lMekREalJjM1hHOHBxMTQwSHVvN2hBNytIQWdNQkFBR2pXVEJYTUE0R0ExVWREd0VCL3dRRUF3SUNwREFQCkJnTlZIUk1CQWY4RUJUQURBUUgvTUIwR0ExVWREZ1FXQkJUK3dMV3lWLzdqdEZLaldQQ2oyODNWSzY3dmFEQVYKQmdOVkhSRUVEakFNZ2dwcmRXSmxjbTVsZEdWek1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQlZnTGxxOWQ4SQpTbFBRa2pXOFpibmh4amczSWlqdjhJVk8rV0MrUlppYndqcWMyZUhBQjV4S2tEUWN5WkZZdTEreHB4ZTUzSkNMCkEwUDBDSXRpS3RpRDZQNDFvczNpZHBYdFNnS0p1RE8rRC9zVXk0NVU4eXBMcU1tTE1EaXh1bGY3TDh2ZmpGT2gKQVZRZVRWZUN2bXBIMFF6S2dyMkF1dTIzcE4xaTQ1dFBMQk1WQlNDSEdSL3YrWDZBaXFCOHBvL0M2eUM4cENZRgpEVVk5K3ppRmFZdVQ3azAzSnBKN3NZNTBIQm5FYlBwUzMzWGFiOUxTTXYvR1JmR0ZmcFdweVBpcktVKzFqNm55CkpCaUVlVHpienBFN2FGT3hKcElxVjhUSGN3S3R6VE1pektQNFhxQUdIQTlSaUlEOFM2UVAwVEJqZTF6c3lzWDEKbTREQ2xiTE5pN1VlCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+      server: https://2011004A76C575745357445151BC1D8E.gr7.us-east-1.eks.amazonaws.com
+    name: arn:aws:eks:us-east-1:350137757872:cluster/ops-cluster
+contexts: []
+apiVersion: v1
+kind: Config
+preferences: {}
+current-context: arn:aws:eks:us-east-1:350137757872:cluster/ops-cluster

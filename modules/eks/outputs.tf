@@ -9,3 +9,16 @@ output "node_group_id" {
 output "cluster_name" {
   value = aws_eks_cluster.example.name
 }
+
+output "host" {
+  value = aws_eks_cluster.example.endpoint
+  
+}
+output "certificate_authority" {
+  value = aws_eks_cluster.example.certificate_authority.0.data
+}
+
+output "external_dns_role_arn" {
+  value = aws_iam_role.external_dns_role.arn 
+  
+}

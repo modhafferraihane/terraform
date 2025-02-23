@@ -6,11 +6,15 @@ terraform {
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "2.11.0"
+      version = "2.35.1"
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "2.7.1"
+      version = "3.0.0-pre1"
+    }
+    kubectl = {
+      source  = "gavinbunney/kubectl"
+      version = ">= 1.7.0"
     }
   }
 }
@@ -31,15 +35,20 @@ data "aws_eks_cluster_auth" "example" {
 
 
 provider "kubernetes" {
-  host                   = data.aws_eks_cluster.example.endpoint
-  cluster_ca_certificate = base64decode(data.aws_eks_cluster.example.certificate_authority.0.data)
+  host                   = module.eks.host
+  cluster_ca_certificate = base64decode(module.eks.certificate_authority)
   token                  = data.aws_eks_cluster_auth.example.token
 }
 
 provider "helm" {
-  kubernetes {
-    host                   = data.aws_eks_cluster.example.endpoint
-    cluster_ca_certificate = base64decode(data.aws_eks_cluster.example.certificate_authority.0.data)
-    token                  = data.aws_eks_cluster_auth.example.token
-  }
-} 
+  kubernetes = {
+    host                   = module.eks.host
+    cluster_ca_certificate = base64decode(module.eks.certificate_authority)
+    token                  = data.aws_eks_cluster_auth.example.token  }
+}
+
+provider "kubectl" {
+  host                   = module.eks.host
+  cluster_ca_certificate = base64decode(module.eks.certificate_authority)
+  token                  = data.aws_eks_cluster_auth.example.token 
+}

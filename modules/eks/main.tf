@@ -28,3 +28,13 @@ resource "aws_eks_node_group" "example" {
   depends_on = [aws_eks_cluster.example]
 }
 
+# resource "aws_iam_openid_connect_provider" "default" {
+#   url = aws_eks_cluster.example.identity.0.oidc.0.issuer
+#   client_id_list = [
+#     "sts.amazonaws.com",
+#   ]
+
+
+#   thumbprint_list = [  ]
+#   depends_on = [ aws_eks_cluster.example ]
+# }

@@ -5,3 +5,21 @@ aws:
 serviceAccount:
   create: true
   name: external-dns
+  
+rbac:
+  create: true
+  serviceAccountName: external-dns
+
+domainFilters:
+  - eksops.site
+
+policy: sync
+registry: txt 
+txtOwnerId: ops-cluster
+
+interval: 3m 
+logLevel: debug
+
+sources:
+  - service
+  - ingress
