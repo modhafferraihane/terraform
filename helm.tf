@@ -26,6 +26,13 @@ resource "helm_release" "cert_manager" {
   depends_on       = [module.eks]
 }
 
+resource "kubernetes_namespace" "monitoring" {
+  metadata {
+    name = "monitoring"
+  }
+  depends_on = [ module.eks ]
+}
+
 resource "helm_release" "kube_prometheus_stack" {
   name       = "kube-prometheus-stack"
   repository = "https://prometheus-community.github.io/helm-charts"
