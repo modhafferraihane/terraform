@@ -14,13 +14,12 @@ resource "kubectl_manifest" "certificate_prometheus" {
 depends_on = [kubectl_manifest.cluster_issuer]
 }
 
-resource "kubectl_manifest" "certificate_wildcards" {
-    yaml_body = file("./kubernetes/manifests/certificates/certificate-wildcards.yaml")
-depends_on = [kubectl_manifest.cluster_issuer]
-}
+# resource "kubectl_manifest" "ingress" {
+#     yaml_body = file("./kubernetes/manifests/ingress.yaml")
+#     depends_on = [kubectl_manifest.cluster_issuer]
+# }
 
-resource "kubectl_manifest" "ingress" {
-    yaml_body = file("./kubernetes/manifests/ingress.yaml")
-    depends_on = [kubectl_manifest.cluster_issuer]
-}
-
+# resource "kubectl_manifest" "certificate_argo" {
+#     yaml_body = file("./kubernetes/manifests/certificates/certificate-argo.yaml")
+# depends_on = [kubectl_manifest.cluster_issuer]
+# }

@@ -25,6 +25,7 @@ Ce projet Terraform configure et déploie une infrastructure hautement disponibl
 - Installer Ingress NGINX via Helm
 - Installer Cert Manager via Helm
 - Installer Kube-Prometheus-Stack via Helm
+- Installer ArgoCD via Helm
 
 ### 5. Déployer les Manifests Kubernetes
 - Utiliser les fichiers [helm.tf](helm.tf) et [kubernetes.tf](kubernetes.tf) pour déployer les ressources Kubernetes
@@ -64,3 +65,6 @@ Ce projet Terraform configure et déploie une infrastructure hautement disponibl
 - Vérifiez les versions des modules et des fournisseurs pour éviter les incompatibilités.
 
 Pour plus de détails, consultez les fichiers de configuration dans le répertoire du projet.
+
+
+modules kubernetes.tf  helm +certif + 

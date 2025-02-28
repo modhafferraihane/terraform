@@ -61,3 +61,14 @@ variable "region" {
 #   description = "The AWS account ID"
 #   type        = string
 # }
+
+# variable "github_client_id" {
+#   description = "The GitHub OAuth client ID"
+#   type        = string
+# }
+
+# variable "github_client_secret" {
+#   description = "The GitHub OAuth client secret"
+#   type        = string
+#   sensitive   = true
+# }

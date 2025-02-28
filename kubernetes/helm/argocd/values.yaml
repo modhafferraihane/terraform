@@ -1,0 +1,69 @@
+# # Global settings for ArgoCD
+# global:
+#   image:
+#     tag: v2.8.3
+
+configs:
+  cm:
+    url: "https://argocd.eksops.site"
+  params:
+    server.insecure: "true"
+
+# # Server settings
+server:
+  service:
+    type: ClusterIP
+  certificate:
+    enabled: true
+    secretName: argocd-server-tls
+    domain: argocd.eksops.site
+    issuer:
+      group: "cert-manager.io"
+      kind: "ClusterIssuer"
+      name: "letsencrypt-prod"
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hostname: "argocd.eksops.site"
+    annotations:
+      kubernetes.io/tls-acme: "true"
+      nginx.ingress.kubernetes.io/rewrite-target: /
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    hosts:
+      - argocd.eksops.site
+    tls: "true"
+
+# # RBAC settings
+# rbac:
+#   policy: |
+#     g, admin, role:admin
+#     g, user, role:readonly
+
+# # Repository credentials
+# configs:
+#   repositories:
+#     - url: https://github.com/modhafferraihane/dockerAngularNginxNodePostgreSQL
+#       usernameSecret:
+#         name: argocd-repo-creds
+#         key: username
+#       passwordSecret:
+#         name: argocd-repo-creds
+#         key: password
+
+# # # Additional settings
+# additionalApplications:
+#   - name: example-app
+#     project: default
+#     source:
+#       repoURL: https://github.com/modhafferraihane/dockerAngularNginxNodePostgreSQL
+#       path: argocd-manifests
+#       targetRevision: HEAD
+#     destination:
+#       server: https://kubernetes.default.svc
+#       namespace: default
+
+# # Redis settings
+# redis:
+#   password:
+#     secretName: argocd-redis
+#     key: password
